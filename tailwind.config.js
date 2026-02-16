@@ -6,13 +6,12 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-
         // 🎞️ Brand Colors (Semantic)
         brand: {
-          primary: "#9A0500",     // main brand color
-          accent: "#E64624",      // buttons / highlights
-          soft: "#FFAF58",        // secondary highlight
-          highlight: "#19481E",   // success / special states
+          primary: "#E64624", // main brand color
+          accent: "#9A0500", // buttons / highlights
+          soft: "#FFAF58", // secondary highlight
+          highlight: "#19481E", // success / special states
         },
 
         // ⭐ UI System

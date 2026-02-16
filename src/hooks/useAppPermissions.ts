@@ -19,8 +19,9 @@ export function useAppPermissions() {
     const isGranted = !!(cameraPermission?.granted && mediaPermission?.granted);
 
     const requestPermissions = async () => {
-        await requestCameraPermission();
-        await requestMediaPermission();
+        const camera = await requestCameraPermission();
+        const media = await requestMediaPermission();
+        return !!(camera?.granted && media?.granted);
     };
 
     return {
