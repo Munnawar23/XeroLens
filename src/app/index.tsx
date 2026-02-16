@@ -31,13 +31,13 @@ export default function SplashScreen() {
 
   // --- Entrance Animations ---
   useEffect(() => {
-    const animationConfig = { duration: 800, easing: Easing.out(Easing.exp) };
-    titleOpacity.value = withDelay(100, withTiming(1, animationConfig));
-    titleTranslateY.value = withDelay(100, withTiming(0, animationConfig));
-    subtitleOpacity.value = withDelay(300, withTiming(1, animationConfig));
-    subtitleTranslateY.value = withDelay(300, withTiming(0, animationConfig));
-    buttonOpacity.value = withDelay(500, withTiming(1, animationConfig));
-    buttonTranslateY.value = withDelay(500, withTiming(0, animationConfig));
+    const animationConfig = { duration: 1000, easing: Easing.out(Easing.exp) };
+    titleOpacity.value = withDelay(200, withTiming(1, animationConfig));
+    titleTranslateY.value = withDelay(200, withTiming(0, animationConfig));
+    subtitleOpacity.value = withDelay(600, withTiming(1, animationConfig));
+    subtitleTranslateY.value = withDelay(600, withTiming(0, animationConfig));
+    buttonOpacity.value = withDelay(1000, withTiming(1, animationConfig));
+    buttonTranslateY.value = withDelay(1000, withTiming(0, animationConfig));
   }, []);
 
   // --- Animated Styles ---
@@ -68,19 +68,19 @@ export default function SplashScreen() {
   };
 
   return (
-    <View className="flex-1 bg-black">
+    <View className="flex-1 bg-background">
       <ImageBackground
         source={require("@/assets/images/splash.webp")}
         className="flex-1"
         resizeMode="cover"
       >
-        <SafeAreaView className="flex-1 justify-end pb-6">
+        <SafeAreaView className="flex-1 justify-end pb-10">
           {/* --- Animated Title --- */}
           <Animated.View
             style={[titleAnimatedStyle]}
             className="items-center mb-2"
           >
-            <Text className="text-6xl text-white text-center font-brand tracking-tight">
+            <Text className="text-5xl text-white text-center font-brand tracking-tighter">
               XeroLens
             </Text>
           </Animated.View>
@@ -88,10 +88,10 @@ export default function SplashScreen() {
           {/* --- Animated Subtitle --- */}
           <Animated.View
             style={[subtitleAnimatedStyle]}
-            className="items-center px-10 mb-6"
+            className="items-center px-10 mb-8"
           >
-            <Text className="text-2xl text-white text-center font-brand leading-relaxed pt-2">
-              Capture every moment in the high fidelity
+            <Text className="text-xl text-white text-center font-brand leading-tight pt-2">
+              Capture every moment in high fidelity
             </Text>
           </Animated.View>
 
@@ -99,8 +99,7 @@ export default function SplashScreen() {
             <Button
               title="Get Started"
               onPress={handleGetStarted}
-              variant="retro"
-              haptic={Haptics.ImpactFeedbackStyle.Medium}
+              variant="primary"
             />
           </Animated.View>
         </SafeAreaView>

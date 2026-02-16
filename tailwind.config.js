@@ -6,22 +6,10 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        // 🎞️ Brand Colors (Semantic)
-        brand: {
-          primary: "#E64624", // main brand color
-          accent: "#9A0500", // buttons / highlights
-          soft: "#FFAF58", // secondary highlight
-          highlight: "#19481E", // success / special states
-        },
-
-        // ⭐ UI System
-        ui: {
-          background: "#FFF4E0",
-          surface: "#FFFFFF",
-          border: "#F1DFC5",
-          text: "#3A2A22",
-          muted: "#7A685D",
-        },
+        primary: "#CF2A2A",
+        secondary: "#1E459F",
+        accent: "#F3A712",
+        background: "#E1DCCA",
       },
 
       fontFamily: {

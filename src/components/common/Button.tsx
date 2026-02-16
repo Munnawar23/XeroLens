@@ -32,27 +32,18 @@ export const Button: React.FC<ButtonProps> = ({
   const getVariantStyles = () => {
     switch (variant) {
       case "secondary":
-        return "bg-zinc-800";
+        return "bg-secondary";
       case "outline":
-        return "border border-white bg-transparent";
+        return "border border-primary bg-transparent";
       case "retro":
-        return "bg-brand-accent shadow-2xl";
+        return "bg-accent shadow-2xl";
       default:
-        return "bg-white";
+        return "bg-accent";
     }
   };
 
   const getTextColor = () => {
-    switch (variant) {
-      case "outline":
-        return "text-white";
-      case "secondary":
-        return "text-white";
-      case "retro":
-        return "text-white";
-      default:
-        return "text-black";
-    }
+    return "text-white";
   };
 
   const getTextTransform = () => {
@@ -64,10 +55,10 @@ export const Button: React.FC<ButtonProps> = ({
       onPress={handlePress}
       activeOpacity={0.8}
       className={`${getVariantStyles()} rounded-2xl items-center justify-center ${className}`}
-      style={[{ width: wp(80), height: hp(7.0) }, containerStyle]}
+      style={[{ width: wp(80), height: hp(6.0) }, containerStyle]}
     >
       <Text
-        className={`${getTextColor()} text-xl font-extrabold font-space ${getTextTransform()}`}
+        className={`${getTextColor()} text-lg font-extrabold font-space ${getTextTransform()}`}
         style={textStyle}
       >
         {title}
