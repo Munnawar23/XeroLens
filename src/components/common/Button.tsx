@@ -58,7 +58,7 @@ export const Button: React.FC<ButtonProps> = ({
       style={[{ width: wp(80), height: hp(7.0) }, containerStyle]}
     >
       <Text
-        className={`${getTextColor()} text-lg font-brand uppercase ${getTextTransform()}`}
+        className={`${getTextColor()} text-xl font-button text-center ${getTextTransform()}`}
         style={textStyle}
       >
         {title}

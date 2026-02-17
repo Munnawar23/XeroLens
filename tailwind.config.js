@@ -16,6 +16,8 @@ module.exports = {
       fontFamily: {
         brand: ["AlfaSlabOne"],
         fancy: ["Righteous"],
+        sans: ["OutfitRegular"],
+        button: ["OutfitBold"],
       },
     },
   },

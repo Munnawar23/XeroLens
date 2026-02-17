@@ -1,7 +1,7 @@
-import { savePhotoToGallery } from "@/services/mediaService";
 import { photoStorage } from "@/services/storageService";
 import { Ionicons } from "@expo/vector-icons";
 import { CameraType, CameraView } from "expo-camera";
+import { router } from "expo-router";
 import { useRef, useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
@@ -24,10 +24,11 @@ export default function Camera() {
         });
 
         if (photo) {
-          // Save to physical gallery
-          await savePhotoToGallery(photo.uri);
-          // Save to local storage for the app's library
+          // Save to local storage for the app's library ONLY (storageService)
           await photoStorage.savePhoto(photo.uri);
+
+          // Navigate to the library tab to view the photo
+          router.push("/(tabs)/library");
         }
       } catch (e) {
         console.error(e);
