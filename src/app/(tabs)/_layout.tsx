@@ -9,7 +9,7 @@ export default function TabLayout() {
       screenOptions={{
         headerShown: false,
         tabBarStyle: {
-          backgroundColor: "#F3A712",
+          backgroundColor: "#CF2A2A",
           borderTopWidth: 0,
           elevation: 0,
           height: Platform.OS === "ios" ? 82 : 62,
@@ -17,7 +17,7 @@ export default function TabLayout() {
           paddingTop: 12,
         },
         tabBarActiveTintColor: "#FFFFFF",
-        tabBarInactiveTintColor: "#1E459F",
+        tabBarInactiveTintColor: "#E1DCCA",
         tabBarLabelStyle: {
           fontFamily: "SpaceGrotesk-SemiBold",
           fontSize: 12,

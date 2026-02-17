@@ -1,12 +1,11 @@
 import { useFonts } from "expo-font";
-import { Drawer } from "expo-router/drawer";
+import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
 import { StatusBar, View } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import "../../global.css";
-import { CustomDrawerContent } from "../components/navigation/CustomDrawerContent";
 
 // Keep the splash screen visible while we fetch resources
 SplashScreen.preventAutoHideAsync();
@@ -34,27 +33,15 @@ export default function RootLayout() {
       <SafeAreaProvider>
         <StatusBar barStyle="light-content" />
         <View style={{ flex: 1, backgroundColor: "#1E459F" }}>
-          <Drawer
-            drawerContent={(props) => <CustomDrawerContent {...props} />}
+          <Stack
             screenOptions={{
               headerShown: false,
-              drawerType: "front",
-              drawerStyle: {
-                backgroundColor: "#1E459F",
-                width: "100%",
-              },
-              drawerHideStatusBarOnOpen: false,
-              overlayColor: "transparent",
+              contentStyle: { backgroundColor: "#1E459F" },
             }}
           >
-            <Drawer.Screen
-              name="(tabs)"
-              options={{
-                drawerLabel: "Main App",
-                title: "XeroLens",
-              }}
-            />
-          </Drawer>
+            <Stack.Screen name="index" />
+            <Stack.Screen name="(tabs)" />
+          </Stack>
         </View>
       </SafeAreaProvider>
     </GestureHandlerRootView>
