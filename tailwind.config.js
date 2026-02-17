@@ -13,8 +13,8 @@ module.exports = {
       },
 
       fontFamily: {
-        brand: ["SpaceGrotesk-SemiBold", "SpaceGrotesk-Bold"],
-        serif: ["PlayfairDisplay-Regular", "PlayfairDisplay-Italic"],
+        brand: ["AlfaSlabOne"],
+        fancy: ["Righteous"],
       },
     },
   },

@@ -70,17 +70,17 @@ export default function SplashScreen() {
   return (
     <View className="flex-1 bg-background">
       <ImageBackground
-        source={require("@/assets/images/splash.webp")}
+        source={{
+          uri: "https://images.pexels.com/photos/2323654/pexels-photo-2323654.jpeg",
+        }}
         className="flex-1"
         resizeMode="cover"
       >
+        <View className="absolute inset-0 bg-black/40" />
         <SafeAreaView className="flex-1 justify-end pb-10">
           {/* --- Animated Title --- */}
-          <Animated.View
-            style={[titleAnimatedStyle]}
-            className="items-center mb-2"
-          >
-            <Text className="text-5xl text-white text-center font-brand tracking-tighter">
+          <Animated.View style={[titleAnimatedStyle]} className="items-center">
+            <Text className="text-5xl text-white text-center font-brand tracking-wide uppercase  leading-tight">
               XeroLens
             </Text>
           </Animated.View>
@@ -90,7 +90,7 @@ export default function SplashScreen() {
             style={[subtitleAnimatedStyle]}
             className="items-center px-10 mb-8"
           >
-            <Text className="text-xl text-white text-center font-brand leading-tight pt-2">
+            <Text className="text-xl text-white text-center font-fancy leading-tight pt-2">
               Capture every moment in high fidelity
             </Text>
           </Animated.View>

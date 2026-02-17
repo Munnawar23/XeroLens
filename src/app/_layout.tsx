@@ -1,4 +1,5 @@
-import { useFonts } from "expo-font";
+import { AlfaSlabOne_400Regular } from "@expo-google-fonts/alfa-slab-one";
+import { Righteous_400Regular, useFonts } from "@expo-google-fonts/righteous";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
@@ -12,10 +13,8 @@ SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   const [loaded, error] = useFonts({
-    "SpaceGrotesk-SemiBold": require("../assets/fonts/SpaceGrotesk-SemiBold.ttf"),
-    "SpaceGrotesk-Bold": require("../assets/fonts/SpaceGrotesk-Bold.ttf"),
-    "PlayfairDisplay-Regular": require("../assets/fonts/PlayfairDisplay-Regular.ttf"),
-    "PlayfairDisplay-Italic": require("../assets/fonts/PlayfairDisplay-Italic.ttf"),
+    AlfaSlabOne: AlfaSlabOne_400Regular,
+    Righteous: Righteous_400Regular,
   });
 
   useEffect(() => {

@@ -13,7 +13,7 @@ export default function CameraScreen() {
   if (!isGranted) {
     return (
       <View className="flex-1 justify-center items-center bg-background p-6">
-        <Text className="text-primary text-center mb-6 text-lg font-medium">
+        <Text className="text-primary text-center mb-6 text-xl font-fancy">
           Camera and Library access is required.
         </Text>
         <Button

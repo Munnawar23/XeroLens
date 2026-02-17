@@ -12,10 +12,7 @@ export default function LibraryScreen() {
       </View>
 
       <View className="flex-1 items-center justify-center">
-        <Text
-          className="text-primary font-brand text-2xl font-bold"
-          style={{ fontFamily: "SpaceGrotesk-Bold" }}
-        >
+        <Text className="text-primary font-brand text-4xl uppercase px-4 py-2 leading-tight">
           Library
         </Text>
       </View>

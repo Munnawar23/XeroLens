@@ -55,10 +55,10 @@ export const Button: React.FC<ButtonProps> = ({
       onPress={handlePress}
       activeOpacity={0.8}
       className={`${getVariantStyles()} rounded-2xl items-center justify-center ${className}`}
-      style={[{ width: wp(80), height: hp(6.0) }, containerStyle]}
+      style={[{ width: wp(80), height: hp(7.0) }, containerStyle]}
     >
       <Text
-        className={`${getTextColor()} text-lg font-extrabold font-space ${getTextTransform()}`}
+        className={`${getTextColor()} text-lg font-brand uppercase ${getTextTransform()}`}
         style={textStyle}
       >
         {title}
