@@ -1,5 +1,5 @@
-import { Ionicons } from "@expo/vector-icons";
 import { Tabs } from "expo-router";
+import { SymbolView } from "expo-symbols";
 import React from "react";
 import { Platform } from "react-native";
 
@@ -30,12 +30,8 @@ export default function TabLayout() {
         name="library"
         options={{
           title: "Library",
-          tabBarIcon: ({ color, size, focused }) => (
-            <Ionicons
-              name={focused ? "images" : "images-outline"}
-              size={size}
-              color={color}
-            />
+          tabBarIcon: ({ color }) => (
+            <SymbolView name="photo.stack.fill" size={27} tintColor={color} />
           ),
         }}
       />
@@ -43,12 +39,8 @@ export default function TabLayout() {
         name="index"
         options={{
           title: "Camera",
-          tabBarIcon: ({ color, size, focused }) => (
-            <Ionicons
-              name={focused ? "camera" : "camera-outline"}
-              size={size}
-              color={color}
-            />
+          tabBarIcon: ({ color }) => (
+            <SymbolView name="camera.fill" size={31} tintColor={color} />
           ),
         }}
       />
@@ -56,11 +48,11 @@ export default function TabLayout() {
         name="studio"
         options={{
           title: "Studio",
-          tabBarIcon: ({ color, size, focused }) => (
-            <Ionicons
-              name={focused ? "color-filter" : "color-filter-outline"}
-              size={size}
-              color={color}
+          tabBarIcon: ({ color }) => (
+            <SymbolView
+              name="wand.and.stars.inverse"
+              size={27}
+              tintColor={color}
             />
           ),
         }}

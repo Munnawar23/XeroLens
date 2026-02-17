@@ -1,4 +1,5 @@
 import { savePhotoToGallery } from "@/services/mediaService";
+import { photoStorage } from "@/services/storageService";
 import { Ionicons } from "@expo/vector-icons";
 import { CameraType, CameraView } from "expo-camera";
 import { useRef, useState } from "react";
@@ -23,7 +24,10 @@ export default function Camera() {
         });
 
         if (photo) {
+          // Save to physical gallery
           await savePhotoToGallery(photo.uri);
+          // Save to local storage for the app's library
+          await photoStorage.savePhoto(photo.uri);
         }
       } catch (e) {
         console.error(e);
