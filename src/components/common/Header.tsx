@@ -1,7 +1,8 @@
+import { useTheme } from "@/hooks/useTheme";
 import { HapticService } from "@/services/hapticService";
 import { theme } from "@/styles/theme";
 import { Feather } from "@expo/vector-icons";
-import React from "react";
+import React, { useMemo } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 interface HeaderProps {
@@ -23,6 +24,9 @@ export const Header: React.FC<HeaderProps> = ({
   onRightPress,
   RightIcon = DefaultSettingsIcon,
 }) => {
+  const colors = useTheme();
+  const styles = useMemo(() => createStyles(colors), [colors]);
+
   return (
     <View style={styles.container}>
       <View>
@@ -38,42 +42,43 @@ export const Header: React.FC<HeaderProps> = ({
           }}
           style={styles.rightButton}
         >
-          <RightIcon size={22} color={theme.lightColors.secondary} />
+          <RightIcon size={22} color={colors.secondary} />
         </TouchableOpacity>
       )}
     </View>
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    paddingHorizontal: 24,
-    paddingVertical: 16,
-  },
-  title: {
-    fontSize: 30,
-    fontFamily: theme.fontFamily.brand,
-    color: theme.lightColors.text,
-    textTransform: "uppercase",
-    letterSpacing: -0.5,
-  },
-  underline: {
-    height: 4,
-    width: 48,
-    backgroundColor: theme.lightColors.primary,
-    marginTop: -4,
-  },
-  rightButton: {
-    width: 40,
-    height: 40,
-    alignItems: "center",
-    justifyContent: "center",
-    borderRadius: 20,
-    backgroundColor: theme.lightColors.secondary + "0D", // 5% opacity
-    borderWidth: 1,
-    borderColor: theme.lightColors.secondary + "1A", // 10% opacity
-  },
-});
+const createStyles = (colors: any) =>
+  StyleSheet.create({
+    container: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      alignItems: "center",
+      paddingHorizontal: 24,
+      paddingVertical: 16,
+    },
+    title: {
+      fontSize: 24,
+      fontFamily: theme.fontFamily.brand,
+      color: colors.text,
+      textTransform: "uppercase",
+      letterSpacing: -0.5,
+    },
+    underline: {
+      height: 4,
+      width: 48,
+      backgroundColor: colors.primary,
+      marginTop: -4,
+    },
+    rightButton: {
+      width: 40,
+      height: 40,
+      alignItems: "center",
+      justifyContent: "center",
+      borderRadius: 20,
+      backgroundColor: colors.secondary + "0D", // 5% opacity
+      borderWidth: 1,
+      borderColor: colors.secondary + "1A", // 10% opacity
+    },
+  });

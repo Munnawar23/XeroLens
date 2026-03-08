@@ -1,3 +1,4 @@
+import { useTheme } from "@/hooks/useTheme";
 import { HapticService } from "@/services/hapticService";
 import { theme } from "@/styles/theme";
 import { Ionicons } from "@expo/vector-icons";
@@ -6,6 +7,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function TabLayout() {
   const insets = useSafeAreaInsets();
+  const colors = useTheme();
 
   const bottomPadding = insets.bottom > 0 ? insets.bottom : 15;
   const BAR_HEIGHT = 60 + bottomPadding;
@@ -20,15 +22,15 @@ export default function TabLayout() {
       screenOptions={{
         headerShown: false,
         tabBarStyle: {
-          backgroundColor: "#336467",
+          backgroundColor: colors.secondary,
           borderTopWidth: 0,
           elevation: 0,
           height: BAR_HEIGHT,
           paddingBottom: bottomPadding,
           paddingTop: 8,
         },
-        tabBarActiveTintColor: "#F5EEDC",
-        tabBarInactiveTintColor: "#F5EEDC80",
+        tabBarActiveTintColor: colors.background,
+        tabBarInactiveTintColor: `${colors.background}80`,
         tabBarLabelStyle: {
           fontFamily: theme.fontFamily.button,
           fontSize: 10,
@@ -39,6 +41,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
+          tabBarStyle: { display: "none" },
           tabBarIcon: ({ color, focused }) => (
             <Ionicons
               name={focused ? "camera" : "camera-outline"}
@@ -47,7 +50,6 @@ export default function TabLayout() {
             />
           ),
           tabBarLabel: "Camera",
-          tabBarStyle: { display: "none" }, // Hide tab bar on Camera by default
         }}
       />
       <Tabs.Screen
@@ -79,6 +81,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="studio"
         options={{
+          tabBarStyle: { display: "none" },
           tabBarIcon: ({ color, focused }) => (
             <Ionicons
               name={focused ? "pencil" : "pencil-outline"}
@@ -87,7 +90,6 @@ export default function TabLayout() {
             />
           ),
           tabBarLabel: "Studio",
-          tabBarStyle: { display: "none" },
         }}
       />
     </Tabs>

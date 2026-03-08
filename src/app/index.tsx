@@ -183,12 +183,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   titleText: {
-    fontSize: 48,
+    fontSize: 40,
     color: theme.lightColors.background,
     textAlign: "center",
     fontFamily: theme.fontFamily.brand,
-    letterSpacing: 2,
+    letterSpacing: 1.5,
     textTransform: "uppercase",
+    lineHeight: 48,
   },
   subtitleContainer: {
     alignItems: "center",
@@ -196,12 +197,12 @@ const styles = StyleSheet.create({
     marginBottom: 32,
   },
   subtitleText: {
-    fontSize: 20,
+    fontSize: 16,
     color: theme.lightColors.background,
     textAlign: "center",
     fontFamily: theme.fontFamily.fancy,
     paddingTop: 16,
-    lineHeight: 24,
+    lineHeight: 22,
   },
   buttonContainer: {
     alignItems: "center",

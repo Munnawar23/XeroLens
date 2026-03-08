@@ -43,6 +43,12 @@
         {
           "cameraPermission": "Allow XeroLens to access your camera to take photos and videos."
         }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Allow XeroLens to access your photos to select vintage captures for editing."
+        }
       ]
     ],
     "experiments": {

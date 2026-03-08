@@ -1,6 +1,7 @@
+import { useTheme } from "@/hooks/useTheme";
 import { theme } from "@/styles/theme";
 import LottieView from "lottie-react-native";
-import React from "react";
+import React, { useMemo } from "react";
 import { StyleSheet, Text, View } from "react-native";
 
 interface EmptyStateProps {
@@ -14,6 +15,9 @@ export const EmptyState: React.FC<EmptyStateProps> = ({
   subtitle = "Photos you take will appear here",
   animationSource = require("@/assets/animations/camera.json"),
 }) => {
+  const colors = useTheme();
+  const styles = useMemo(() => createStyles(colors), [colors]);
+
   return (
     <View style={styles.container}>
       <View style={styles.animationContainer}>
@@ -30,36 +34,37 @@ export const EmptyState: React.FC<EmptyStateProps> = ({
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    paddingHorizontal: 40,
-  },
-  animationContainer: {
-    width: 256,
-    height: 256,
-    marginBottom: 24,
-  },
-  animation: {
-    width: "100%",
-    height: "100%",
-  },
-  title: {
-    color: theme.lightColors.text,
-    fontFamily: theme.fontFamily.brand,
-    fontSize: 30,
-    textTransform: "uppercase",
-    textAlign: "center",
-    lineHeight: 36,
-    marginBottom: 8,
-  },
-  subtitle: {
-    color: theme.lightColors.secondary,
-    fontFamily: theme.fontFamily.sans,
-    fontSize: 18,
-    textAlign: "center",
-    opacity: 0.7,
-  },
-});
+const createStyles = (colors: any) =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      alignItems: "center",
+      justifyContent: "center",
+      paddingHorizontal: 40,
+    },
+    animationContainer: {
+      width: 256,
+      height: 256,
+      marginBottom: 24,
+    },
+    animation: {
+      width: "100%",
+      height: "100%",
+    },
+    title: {
+      color: colors.text,
+      fontFamily: theme.fontFamily.brand,
+      fontSize: 24,
+      textTransform: "uppercase",
+      textAlign: "center",
+      lineHeight: 30,
+      marginBottom: 8,
+    },
+    subtitle: {
+      color: colors.secondary,
+      fontFamily: theme.fontFamily.sans,
+      fontSize: 14,
+      textAlign: "center",
+      opacity: 0.7,
+    },
+  });

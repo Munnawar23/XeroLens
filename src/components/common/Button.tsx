@@ -1,14 +1,15 @@
 import { hp, wp } from "@/helpers";
+import { useTheme } from "@/hooks/useTheme";
 import { HapticService, HapticType } from "@/services/hapticService";
 import { theme } from "@/styles/theme";
-import React, { ReactNode } from "react";
+import React, { ReactNode, useMemo } from "react";
 import {
-    StyleSheet,
-    Text,
-    TextStyle,
-    TouchableOpacity,
-    View,
-    ViewStyle,
+  StyleSheet,
+  Text,
+  TextStyle,
+  TouchableOpacity,
+  View,
+  ViewStyle,
 } from "react-native";
 
 interface ButtonProps {
@@ -36,6 +37,9 @@ export const Button: React.FC<ButtonProps> = ({
   textColor,
   disabled = false,
 }) => {
+  const colors = useTheme();
+  const styles = useMemo(() => createStyles(colors), [colors]);
+
   const handlePress = () => {
     if (haptic && !disabled) {
       HapticService.trigger(haptic);
@@ -44,9 +48,7 @@ export const Button: React.FC<ButtonProps> = ({
   };
 
   const isVariant2 = variant === "variant2";
-  const bgColor = isVariant2
-    ? theme.lightColors.primary
-    : theme.lightColors.secondary;
+  const bgColor = isVariant2 ? colors.primary : colors.secondary;
 
   return (
     <TouchableOpacity
@@ -72,33 +74,34 @@ export const Button: React.FC<ButtonProps> = ({
   );
 };
 
-const styles = StyleSheet.create({
-  button: {
-    borderRadius: 16,
-    alignItems: "center",
-    justifyContent: "center",
-    flexDirection: "row",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.1,
-    shadowRadius: 2,
-    elevation: 2,
-  },
-  disabled: {
-    opacity: 0.5,
-  },
-  leftIcon: {
-    marginRight: 8,
-  },
-  rightIcon: {
-    marginLeft: 8,
-  },
-  text: {
-    color: theme.lightColors.textLight,
-    fontFamily: theme.fontFamily.button,
-    fontSize: 20,
-    textAlign: "center",
-    textTransform: "uppercase",
-    letterSpacing: 1,
-  },
-});
+const createStyles = (colors: any) =>
+  StyleSheet.create({
+    button: {
+      borderRadius: 16,
+      alignItems: "center",
+      justifyContent: "center",
+      flexDirection: "row",
+      shadowColor: "#000",
+      shadowOffset: { width: 0, height: 1 },
+      shadowOpacity: 0.1,
+      shadowRadius: 2,
+      elevation: 2,
+    },
+    disabled: {
+      opacity: 0.5,
+    },
+    leftIcon: {
+      marginRight: 8,
+    },
+    rightIcon: {
+      marginLeft: 8,
+    },
+    text: {
+      color: colors.textLight,
+      fontFamily: theme.fontFamily.button,
+      fontSize: 16,
+      textAlign: "center",
+      textTransform: "uppercase",
+      letterSpacing: 1,
+    },
+  });

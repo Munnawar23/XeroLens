@@ -1,8 +1,9 @@
 import { Button } from "@/components/common/Button";
 import { hp } from "@/helpers";
+import { useTheme } from "@/hooks/useTheme";
 import { HapticService } from "@/services/hapticService";
 import { theme } from "@/styles/theme";
-import React from "react";
+import React, { useMemo } from "react";
 import { Modal, Pressable, StyleSheet, Text, View } from "react-native";
 
 interface ConfirmationModalProps {
@@ -26,6 +27,12 @@ export const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
   cancelTitle = "Cancel",
   isDanger = true,
 }) => {
+  const colors = useTheme();
+  const styles = useMemo(
+    () => createStyles(colors, isDanger),
+    [colors, isDanger],
+  );
+
   const handleConfirm = () => {
     HapticService.trigger("impactHeavy");
     onConfirm();
@@ -81,7 +88,7 @@ export const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
                 width: "100%",
                 height: hp(6.5),
               }}
-              textStyle={{ color: "#FFFFFF" }}
+              textStyle={{ color: colors.textLight }}
             />
 
             <Pressable onPress={handleClose} style={styles.cancelButton}>
@@ -96,98 +103,99 @@ export const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
   );
 };
 
-const styles = StyleSheet.create({
-  overlay: {
-    flex: 1,
-    backgroundColor: "rgba(0,0,0,0.7)",
-    justifyContent: "center",
-    alignItems: "center",
-    paddingHorizontal: 24,
-  },
-  modalContainer: {
-    backgroundColor: theme.lightColors.background,
-    width: "100%",
-    borderRadius: 40,
-    padding: 32,
-    borderWidth: 1,
-    borderColor: "rgba(0,0,0,0.1)",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 10 },
-    shadowOpacity: 0.25,
-    shadowRadius: 10,
-    elevation: 5,
-  },
-  iconOuter: {
-    width: 80,
-    height: 80,
-    borderRadius: 40,
-    alignItems: "center",
-    justifyContent: "center",
-    alignSelf: "center",
-    marginBottom: 24,
-  },
-  iconOuterDanger: {
-    backgroundColor: theme.lightColors.primary + "1A", // 10% opacity
-  },
-  iconOuterSafe: {
-    backgroundColor: theme.lightColors.secondary + "1A", // 10% opacity
-  },
-  iconInner: {
-    width: 56,
-    height: 56,
-    borderRadius: 28,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  iconInnerDanger: {
-    backgroundColor: theme.lightColors.primary,
-  },
-  iconInnerSafe: {
-    backgroundColor: theme.lightColors.secondary,
-  },
-  iconText: {
-    color: theme.lightColors.textLight,
-    fontFamily: theme.fontFamily.brand,
-    fontSize: 24,
-  },
-  textContent: {
-    alignItems: "center",
-    marginBottom: 32,
-  },
-  title: {
-    color: theme.lightColors.text,
-    fontFamily: theme.fontFamily.brand,
-    fontSize: 24,
-    textTransform: "uppercase",
-    textAlign: "center",
-    marginBottom: 12,
-    letterSpacing: -0.5,
-  },
-  message: {
-    color: theme.lightColors.text,
-    fontFamily: theme.fontFamily.fancy,
-    fontSize: 18,
-    textAlign: "center",
-    lineHeight: 24,
-  },
-  actionContainer: {
-    gap: 16,
-  },
-  cancelButton: {
-    alignItems: "center",
-    justifyContent: "center",
-    paddingVertical: 8,
-  },
-  cancelTextContainer: {
-    borderBottomWidth: 1,
-    borderColor: "rgba(107, 112, 92, 0.3)", // muted with 30% opacity
-  },
-  cancelText: {
-    color: theme.lightColors.text,
-    fontFamily: theme.fontFamily.fancy,
-    fontSize: 18,
-    textTransform: "uppercase",
-    letterSpacing: 2,
-    paddingBottom: 2,
-  },
-});
+const createStyles = (colors: any, isDanger: boolean) =>
+  StyleSheet.create({
+    overlay: {
+      flex: 1,
+      backgroundColor: "rgba(0,0,0,0.7)",
+      justifyContent: "center",
+      alignItems: "center",
+      paddingHorizontal: 24,
+    },
+    modalContainer: {
+      backgroundColor: colors.background,
+      width: "100%",
+      borderRadius: 40,
+      padding: 32,
+      borderWidth: 1,
+      borderColor: "rgba(0,0,0,0.1)",
+      shadowColor: "#000",
+      shadowOffset: { width: 0, height: 10 },
+      shadowOpacity: 0.25,
+      shadowRadius: 10,
+      elevation: 5,
+    },
+    iconOuter: {
+      width: 80,
+      height: 80,
+      borderRadius: 40,
+      alignItems: "center",
+      justifyContent: "center",
+      alignSelf: "center",
+      marginBottom: 24,
+    },
+    iconOuterDanger: {
+      backgroundColor: colors.primary + "1A", // 10% opacity
+    },
+    iconOuterSafe: {
+      backgroundColor: colors.secondary + "1A", // 10% opacity
+    },
+    iconInner: {
+      width: 56,
+      height: 56,
+      borderRadius: 28,
+      alignItems: "center",
+      justifyContent: "center",
+    },
+    iconInnerDanger: {
+      backgroundColor: colors.primary,
+    },
+    iconInnerSafe: {
+      backgroundColor: colors.secondary,
+    },
+    iconText: {
+      color: colors.textLight,
+      fontFamily: theme.fontFamily.brand,
+      fontSize: 24,
+    },
+    textContent: {
+      alignItems: "center",
+      marginBottom: 32,
+    },
+    title: {
+      color: colors.text,
+      fontFamily: theme.fontFamily.brand,
+      fontSize: 20,
+      textTransform: "uppercase",
+      textAlign: "center",
+      marginBottom: 12,
+      letterSpacing: -0.5,
+    },
+    message: {
+      color: colors.text,
+      fontFamily: theme.fontFamily.fancy,
+      fontSize: 14,
+      textAlign: "center",
+      lineHeight: 20,
+    },
+    actionContainer: {
+      gap: 16,
+    },
+    cancelButton: {
+      alignItems: "center",
+      justifyContent: "center",
+      paddingVertical: 8,
+    },
+    cancelTextContainer: {
+      borderBottomWidth: 1,
+      borderColor: `${colors.muted}4D`, // 30% opacity
+    },
+    cancelText: {
+      color: colors.text,
+      fontFamily: theme.fontFamily.fancy,
+      fontSize: 14,
+      textTransform: "uppercase",
+      letterSpacing: 2,
+      paddingBottom: 2,
+    },
+  });
