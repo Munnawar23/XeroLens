@@ -5,11 +5,11 @@ import { theme } from "@/styles/theme";
 import { Ionicons } from "@expo/vector-icons";
 import React, { useMemo } from "react";
 import {
-    ActivityIndicator,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View,
+  ActivityIndicator,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from "react-native";
 
 interface HeaderProps {
@@ -98,7 +98,7 @@ const createStyles = (colors: any) =>
       alignItems: "center",
     },
     titleText: {
-      color: colors.secondary,
+      color: colors.text,
       fontFamily: theme.fontFamily.brand,
       fontSize: 12,
       textTransform: "uppercase",

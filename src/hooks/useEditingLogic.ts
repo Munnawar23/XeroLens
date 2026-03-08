@@ -122,7 +122,7 @@ export const useEditingLogic = () => {
       });
 
       setTimeout(() => {
-        router.back();
+        router.replace("/(tabs)/library");
       }, 500);
     } catch (err) {
       console.error("Save failed:", err);

@@ -7,7 +7,14 @@ import { Feather } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { router } from "expo-router";
 import React, { useEffect, useState } from "react";
-import { ImageBackground, StyleSheet, Text, View } from "react-native";
+import {
+  Alert,
+  ImageBackground,
+  Linking,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import Animated, {
   Easing,
   useAnimatedStyle,
@@ -88,20 +95,27 @@ export default function SplashScreen() {
   const handleGetStarted = async () => {
     HapticService.trigger("impactMedium");
 
-    // Set the flag so splash doesn't show again
-    try {
-      await AsyncStorage.setItem(HAS_LAUNCHED_KEY, "true");
-    } catch (error) {
-      console.error("Error saving launch state:", error);
-    }
+    const allGranted = isGranted ? true : await requestPermissions();
 
-    if (!isGranted) {
-      const granted = await requestPermissions();
-      if (granted) {
-        router.replace("/(tabs)" as any);
+    if (allGranted) {
+      try {
+        await AsyncStorage.setItem(HAS_LAUNCHED_KEY, "true");
+      } catch (error) {
+        console.error("Error saving launch state:", error);
       }
-    } else {
       router.replace("/(tabs)" as any);
+    } else {
+      Alert.alert(
+        "Permissions Required",
+        "XeroLens needs Camera and Storage access to capture and save your vintage photos. Please grant the permissions to continue.",
+        [
+          { text: "Try Again", onPress: () => handleGetStarted() },
+          {
+            text: "Open Settings",
+            onPress: () => Linking.openSettings(),
+          },
+        ],
+      );
     }
   };
 
@@ -197,7 +211,7 @@ const styles = StyleSheet.create({
     marginBottom: 32,
   },
   subtitleText: {
-    fontSize: 16,
+    fontSize: 18,
     color: theme.lightColors.background,
     textAlign: "center",
     fontFamily: theme.fontFamily.fancy,

@@ -14,6 +14,5 @@ export const useTheme = (): ThemeColors => {
     return lightColors;
   }
 
-  // Handle "system" mode
   return systemColorScheme === "dark" ? darkColors : lightColors;
 };

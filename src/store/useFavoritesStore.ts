@@ -3,7 +3,7 @@ import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 
 interface FavoritesState {
-  favorites: string[]; // Store only photo IDs
+  favorites: string[];
   toggleFavorite: (id: string) => void;
   isFavorite: (id: string) => boolean;
   clearFavorites: () => void;

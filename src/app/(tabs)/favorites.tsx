@@ -1,21 +1,13 @@
 import { EmptyState } from "@/components/common/EmptyState";
 import { Header } from "@/components/common/Header";
 import { PhotoGrid } from "@/components/common/PhotoGrid";
-import { SettingsBottomSheet } from "@/components/common/SettingsBottomSheet";
 import { useTheme } from "@/hooks/useTheme";
 import { CapturedPhoto } from "@/services/storageService";
 import { useFavoritesStore } from "@/store/useFavoritesStore";
 import { useLibraryStore } from "@/store/useLibraryStore";
 import { theme } from "@/styles/theme";
-import BottomSheet from "@gorhom/bottom-sheet";
 import { router, useFocusEffect } from "expo-router";
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import React, { useCallback, useMemo } from "react";
 import {
   ActivityIndicator,
   FlatList,
@@ -24,13 +16,6 @@ import {
   Text,
   View,
 } from "react-native";
-import Animated, {
-  Easing,
-  useAnimatedStyle,
-  useSharedValue,
-  withSpring,
-  withTiming,
-} from "react-native-reanimated";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 // Helper to format date
@@ -41,44 +26,6 @@ const formatDate = (timestamp: number) => {
     day: "numeric",
     year: "numeric",
   });
-};
-
-// Internal Hooks as requested (keep in same file)
-export const useFavoritesAnimations = () => {
-  const [isFocused, setIsFocused] = useState(false);
-  const opacity = useSharedValue(0);
-  const translateY = useSharedValue(30);
-  const scale = useSharedValue(0.95);
-
-  useFocusEffect(
-    useCallback(() => {
-      setIsFocused(true);
-      return () => setIsFocused(false);
-    }, []),
-  );
-
-  useEffect(() => {
-    if (isFocused) {
-      const animationConfig = {
-        duration: 800,
-        easing: Easing.out(Easing.exp),
-      };
-      opacity.value = withTiming(1, animationConfig);
-      translateY.value = withSpring(0, { damping: 15, stiffness: 100 });
-      scale.value = withSpring(1, { damping: 15, stiffness: 100 });
-    } else {
-      opacity.value = withTiming(0, { duration: 300 });
-      translateY.value = 30;
-      scale.value = 0.95;
-    }
-  }, [isFocused]);
-
-  const animatedStyle = useAnimatedStyle(() => ({
-    opacity: opacity.value,
-    transform: [{ translateY: translateY.value }, { scale: scale.value }],
-  }));
-
-  return { animatedStyle };
 };
 
 export const useFavoritePhotos = () => {
@@ -135,7 +82,6 @@ export const useFavoritePhotos = () => {
 
 export default function FavoritesScreen() {
   const colors = useTheme();
-  const settingsBottomSheetRef = useRef<BottomSheet>(null);
   const styles = useMemo(() => createScreenStyles(colors), [colors]);
 
   const {
@@ -144,14 +90,7 @@ export default function FavoritesScreen() {
     refreshing,
     isLoading,
     onRefresh,
-    fetchPhotos,
   } = useFavoritePhotos();
-
-  const { animatedStyle } = useFavoritesAnimations();
-
-  const handleOpenSettings = () => {
-    settingsBottomSheetRef.current?.expand();
-  };
 
   const renderSectionHeader = (date: string) => (
     <View style={styles.sectionHeader}>
@@ -163,18 +102,20 @@ export default function FavoritesScreen() {
   return (
     <View style={styles.container}>
       <SafeAreaView style={styles.safeArea} edges={["top"]}>
-        <Animated.View style={[styles.mainContent, animatedStyle]}>
+        <View style={styles.mainContent}>
           {isLoading ? (
             <View style={styles.centered}>
               <ActivityIndicator color={colors.primary} size="large" />
             </View>
           ) : favoritePhotos.length === 0 ? (
             <View style={styles.flex1}>
-              <Header title="Favorites" onRightPress={handleOpenSettings} />
+              <Header title="Favorites" />
               {!refreshing && !isLoading ? (
                 <EmptyState
                   title="No Favorites Yet"
                   subtitle="Heart your best shots to see them here"
+                  animationSource={require("@/assets/animations/empty.json")}
+                  animationSize={180}
                 />
               ) : (
                 <View style={styles.centered}>
@@ -186,9 +127,7 @@ export default function FavoritesScreen() {
             <FlatList
               data={sections}
               keyExtractor={(item) => item.date}
-              ListHeaderComponent={
-                <Header title="Favorites" onRightPress={handleOpenSettings} />
-              }
+              ListHeaderComponent={<Header title="Favorites" />}
               renderItem={({ item }) => (
                 <View style={styles.sectionContainer}>
                   {renderSectionHeader(item.date)}
@@ -210,13 +149,8 @@ export default function FavoritesScreen() {
               }
             />
           )}
-        </Animated.View>
+        </View>
       </SafeAreaView>
-
-      <SettingsBottomSheet
-        ref={settingsBottomSheetRef}
-        onPhotosCleared={() => fetchPhotos()}
-      />
     </View>
   );
 }
@@ -253,15 +187,14 @@ const createScreenStyles = (colors: any) =>
     },
     sectionTitle: {
       color: colors.text,
-      fontFamily: theme.fontFamily.brand,
+      fontFamily: theme.fontFamily.fancy,
       fontSize: 14,
       textTransform: "uppercase",
       letterSpacing: 2,
-      opacity: 0.6,
     },
     sectionDivider: {
       height: 1,
-      backgroundColor: `${colors.secondary}1A`,
+      backgroundColor: `${colors.text}1A`,
       marginTop: 8,
       width: 40,
     },

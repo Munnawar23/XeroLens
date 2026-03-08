@@ -1,6 +1,6 @@
 import { useTheme } from "@/hooks/useTheme";
 import { HapticService } from "@/services/hapticService";
-import { theme } from "@/styles/theme";
+import { darkColors, theme } from "@/styles/theme";
 import { Ionicons } from "@expo/vector-icons";
 import { Tabs } from "expo-router";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -8,6 +8,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 export default function TabLayout() {
   const insets = useSafeAreaInsets();
   const colors = useTheme();
+  const isDark = colors.background === darkColors.background;
 
   const bottomPadding = insets.bottom > 0 ? insets.bottom : 15;
   const BAR_HEIGHT = 60 + bottomPadding;
@@ -22,7 +23,7 @@ export default function TabLayout() {
       screenOptions={{
         headerShown: false,
         tabBarStyle: {
-          backgroundColor: colors.secondary,
+          backgroundColor: isDark ? colors.primary : colors.secondary,
           borderTopWidth: 0,
           elevation: 0,
           height: BAR_HEIGHT,
@@ -53,6 +54,20 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
+        name="studio"
+        options={{
+          tabBarStyle: { display: "none" },
+          tabBarIcon: ({ color, focused }) => (
+            <Ionicons
+              name={focused ? "pencil" : "pencil-outline"}
+              color={color}
+              size={26}
+            />
+          ),
+          tabBarLabel: "Studio",
+        }}
+      />
+      <Tabs.Screen
         name="library"
         options={{
           tabBarIcon: ({ color, focused }) => (
@@ -78,18 +93,18 @@ export default function TabLayout() {
           tabBarLabel: "Favorites",
         }}
       />
+
       <Tabs.Screen
-        name="studio"
+        name="settings"
         options={{
-          tabBarStyle: { display: "none" },
           tabBarIcon: ({ color, focused }) => (
             <Ionicons
-              name={focused ? "pencil" : "pencil-outline"}
+              name={focused ? "settings" : "settings-outline"}
               color={color}
               size={26}
             />
           ),
-          tabBarLabel: "Studio",
+          tabBarLabel: "Settings",
         }}
       />
     </Tabs>

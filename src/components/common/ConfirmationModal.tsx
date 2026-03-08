@@ -39,7 +39,7 @@ export const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
   };
 
   const handleClose = () => {
-    HapticService.trigger("impactMedium");
+    HapticService.trigger("impactHeavy");
     onClose();
   };
 

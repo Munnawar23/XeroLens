@@ -41,13 +41,22 @@
       [
         "expo-camera",
         {
-          "cameraPermission": "Allow XeroLens to access your camera to take photos and videos."
+          "cameraPermission": "Allow XeroLens to access your camera to take photos and videos.",
+          "microphonePermission": "Allow XeroLens to access your microphone for video recording."
         }
       ],
       [
         "expo-image-picker",
         {
           "photosPermission": "Allow XeroLens to access your photos to select vintage captures for editing."
+        }
+      ],
+      [
+        "expo-media-library",
+        {
+          "photosPermission": "Allow XeroLens to save your vintage captures to the gallery.",
+          "savePhotosPermission": "Allow XeroLens to save photos to your library.",
+          "isAccessMediaLocationEnabled": false
         }
       ]
     ],

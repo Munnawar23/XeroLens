@@ -5,7 +5,7 @@ type CameraFacing = "back" | "front";
 interface CameraState {
   facing: CameraFacing;
   torch: boolean;
-  timerDuration: number; // 0, 3, or 10
+  timerDuration: number;
   countdown: number | null;
   zoom: number;
 
@@ -39,9 +39,14 @@ export const cameraStore = create<CameraState>((set, get) => ({
 
   toggleTimer: () =>
     set((state) => {
-      // Cycle: 0 -> 3 -> 10 -> 0
-      const next =
-        state.timerDuration === 0 ? 3 : state.timerDuration === 3 ? 10 : 0;
+      // Cycle: 0 -> 3 -> 4 -> 5 -> 0
+      const nextMap: Record<number, number> = {
+        0: 3,
+        3: 4,
+        4: 5,
+        5: 0,
+      };
+      const next = nextMap[state.timerDuration] ?? 0;
       return { timerDuration: next };
     }),
 }));

@@ -42,7 +42,7 @@ export const Header: React.FC<HeaderProps> = ({
           }}
           style={styles.rightButton}
         >
-          <RightIcon size={22} color={colors.secondary} />
+          <RightIcon size={22} color={colors.text} />
         </TouchableOpacity>
       )}
     </View>
@@ -77,8 +77,7 @@ const createStyles = (colors: any) =>
       alignItems: "center",
       justifyContent: "center",
       borderRadius: 20,
-      backgroundColor: colors.secondary + "0D", // 5% opacity
       borderWidth: 1,
-      borderColor: colors.secondary + "1A", // 10% opacity
+      borderColor: colors.text + "1A",
     },
   });

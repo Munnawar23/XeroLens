@@ -1,124 +1,22 @@
 import { Button } from "@/components/common/Button";
 import { ConfirmationModal } from "@/components/common/ConfirmationModal";
+import { DetailHeader } from "@/components/screens/photo/DetailHeader";
 import { useTheme } from "@/hooks/useTheme";
 import { HapticService } from "@/services/hapticService";
 import { savePhotoToGallery } from "@/services/mediaService";
 import { CapturedPhoto, photoStorage } from "@/services/storageService";
-import { theme } from "@/styles/theme";
 import { Feather } from "@expo/vector-icons";
 import { router, useLocalSearchParams } from "expo-router";
 import React, { useEffect, useMemo, useState } from "react";
 import {
-    ActivityIndicator,
-    Image,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View,
+  ActivityIndicator,
+  Image,
+  StyleSheet,
+  TouchableOpacity,
+  View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Toast from "react-native-toast-message";
-
-/**
- * Internal Header Component (within id.tsx as requested)
- */
-interface HeaderProps {
-  date: Date | string | number;
-  onDeletePress: () => void;
-  isDeleting?: boolean;
-}
-
-const PhotoHeader: React.FC<HeaderProps> = ({
-  date,
-  onDeletePress,
-  isDeleting,
-}) => {
-  const colors = useTheme();
-  const styles = useMemo(() => createHeaderStyles(colors), [colors]);
-
-  const handleBack = () => {
-    HapticService.trigger("impactMedium");
-    router.back();
-  };
-
-  const handleDelete = () => {
-    HapticService.trigger("impactHeavy");
-    onDeletePress();
-  };
-
-  return (
-    <View style={styles.headerContainer}>
-      <TouchableOpacity onPress={handleBack} style={styles.backButton}>
-        <Feather name="chevron-left" size={24} color={colors.primary} />
-      </TouchableOpacity>
-
-      <View style={styles.titleContainer}>
-        <Text style={styles.titleText}>Photo Detail</Text>
-        <Text style={styles.subtitleText}>
-          {new Date(date).toLocaleDateString("en-US", {
-            month: "short",
-            day: "numeric",
-            year: "numeric",
-          })}
-        </Text>
-      </View>
-
-      <TouchableOpacity
-        onPress={handleDelete}
-        style={styles.deleteButton}
-        disabled={isDeleting}
-      >
-        <Feather name="trash-2" size={24} color={colors.primary} />
-      </TouchableOpacity>
-    </View>
-  );
-};
-
-const createHeaderStyles = (colors: any) =>
-  StyleSheet.create({
-    headerContainer: {
-      flexDirection: "row",
-      justifyContent: "space-between",
-      alignItems: "center",
-      paddingHorizontal: 24,
-      paddingVertical: 16,
-    },
-    backButton: {
-      backgroundColor: `${colors.secondary}1A`,
-      padding: 12,
-      borderRadius: 16,
-      borderWidth: 1,
-      borderColor: `${colors.secondary}1A`,
-    },
-    titleContainer: {
-      position: "absolute",
-      left: 0,
-      right: 0,
-      alignItems: "center",
-      zIndex: -1,
-    },
-    titleText: {
-      color: colors.text,
-      fontFamily: theme.fontFamily.brand,
-      fontSize: 18,
-      textTransform: "uppercase",
-      letterSpacing: 1,
-    },
-    subtitleText: {
-      color: colors.text,
-      fontFamily: theme.fontFamily.fancy,
-      fontSize: 14,
-      textTransform: "uppercase",
-      opacity: 0.7,
-    },
-    deleteButton: {
-      backgroundColor: `${colors.secondary}1A`,
-      padding: 12,
-      borderRadius: 16,
-      borderWidth: 1,
-      borderColor: `${colors.secondary}1A`,
-    },
-  });
 
 /**
  * Main PhotoDetail Screen
@@ -214,7 +112,7 @@ export default function PhotoDetailScreen() {
   return (
     <View style={styles.container}>
       <SafeAreaView style={styles.safeArea}>
-        <PhotoHeader
+        <DetailHeader
           date={photo.date}
           onDeletePress={handleDeletePress}
           isDeleting={isDeleting}
@@ -234,7 +132,20 @@ export default function PhotoDetailScreen() {
         {/* Footer Actions */}
         <View style={styles.footer}>
           <Button
-            title="Edit Photo"
+            title={isSaving ? "Saving..." : "Save to Gallery"}
+            onPress={handleSaveToGallery}
+            variant="variant2"
+            disabled={isSaving}
+            leftIcon={
+              isSaving ? (
+                <ActivityIndicator color="white" size="small" />
+              ) : (
+                <Feather name="download" size={20} color="white" />
+              )
+            }
+            containerStyle={styles.saveButtonBig}
+          />
+          <TouchableOpacity
             onPress={() => {
               HapticService.trigger("impactMedium");
               router.push({
@@ -242,19 +153,9 @@ export default function PhotoDetailScreen() {
                 params: { id: photo.id },
               } as any);
             }}
-            leftIcon={<Feather name="edit-3" size={20} color="white" />}
-            containerStyle={styles.editButton}
-          />
-          <TouchableOpacity
-            onPress={handleSaveToGallery}
-            style={styles.saveButton}
-            disabled={isSaving}
+            style={styles.editButtonSmall}
           >
-            {isSaving ? (
-              <ActivityIndicator color={colors.primary} size="small" />
-            ) : (
-              <Feather name="download" size={24} color={colors.primary} />
-            )}
+            <Feather name="edit-3" size={24} color={colors.primary} />
           </TouchableOpacity>
         </View>
       </SafeAreaView>
@@ -312,11 +213,7 @@ const createScreenStyles = (colors: any) =>
       paddingBottom: 48,
       paddingTop: 16,
     },
-    editButton: {
-      flex: 1,
-      height: 55,
-    },
-    saveButton: {
+    editButtonSmall: {
       backgroundColor: `${colors.secondary}1A`,
       width: 55,
       height: 55,
@@ -325,5 +222,9 @@ const createScreenStyles = (colors: any) =>
       justifyContent: "center",
       borderWidth: 1,
       borderColor: `${colors.secondary}1A`,
+    },
+    saveButtonBig: {
+      flex: 1,
+      height: 55,
     },
   });

@@ -98,7 +98,7 @@ export default function StudioScreen() {
                   }}
                   style={styles.closeButton}
                 >
-                  <Feather name="x" color={colors.background} size={32} />
+                  <Feather name="x" color={colors.textLight} size={32} />
                 </TouchableOpacity>
               </Animated.View>
 
@@ -141,7 +141,7 @@ export default function StudioScreen() {
                         <Ionicons
                           name="sparkles"
                           size={24}
-                          color={colors.background}
+                          color={colors.textLight}
                         />
                       )
                     }
@@ -160,7 +160,7 @@ const createStyles = (colors: any) =>
   StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: colors.text, // acts as black border
+      backgroundColor: colors.text,
     },
     imageBackground: {
       flex: 1,
@@ -197,14 +197,15 @@ const createStyles = (colors: any) =>
       marginBottom: 12,
     },
     titleText: {
-      color: colors.background,
+      color: colors.textLight,
       fontSize: 50,
       textTransform: "uppercase",
       fontFamily: theme.fontFamily.brand,
-      lineHeight: 50,
+      lineHeight: 58,
+      paddingTop: 10,
     },
     descriptionText: {
-      color: colors.background,
+      color: colors.textLight,
       fontSize: 18,
       lineHeight: 28,
       marginBottom: 28,

@@ -3,7 +3,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 export interface CapturedPhoto {
   id: string;
   uri: string;
-  date: number; // timestamp
+  date: number;
 }
 
 const PHOTOS_KEY = "v1.captured_photos";

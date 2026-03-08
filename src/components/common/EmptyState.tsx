@@ -8,19 +8,26 @@ interface EmptyStateProps {
   title?: string;
   subtitle?: string;
   animationSource?: any;
+  animationSize?: number;
 }
 
 export const EmptyState: React.FC<EmptyStateProps> = ({
   title = "Your Library is Empty",
   subtitle = "Photos you take will appear here",
   animationSource = require("@/assets/animations/camera.json"),
+  animationSize = 256,
 }) => {
   const colors = useTheme();
   const styles = useMemo(() => createStyles(colors), [colors]);
 
   return (
     <View style={styles.container}>
-      <View style={styles.animationContainer}>
+      <View
+        style={[
+          styles.animationContainer,
+          { width: animationSize, height: animationSize },
+        ]}
+      >
         <LottieView
           source={animationSource}
           autoPlay
@@ -61,7 +68,7 @@ const createStyles = (colors: any) =>
       marginBottom: 8,
     },
     subtitle: {
-      color: colors.secondary,
+      color: colors.text,
       fontFamily: theme.fontFamily.sans,
       fontSize: 14,
       textAlign: "center",

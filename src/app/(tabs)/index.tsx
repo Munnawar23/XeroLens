@@ -49,7 +49,6 @@ export default function CameraScreen() {
   // ─── Camera Capture Logic (previously in hooks) ──────────────────────────
   const [previewUri, setPreviewUri] = useState<string | null>(null);
   const [isSaving, setIsSaving] = useState(false);
-  const [isScreenFlash, setIsScreenFlash] = useState(false);
   const { fetchPhotos } = useLibraryStore();
 
   const captureImage = async () => {
@@ -57,27 +56,16 @@ export default function CameraScreen() {
 
     try {
       HapticService.trigger("impactHeavy");
-      const isFront = facing === "front";
-      const useScreenFlash = isFront && torch;
-
-      if (useScreenFlash) {
-        setIsScreenFlash(true);
-        await new Promise((resolve) => setTimeout(resolve, 300));
-      }
-
       const photo = await cameraRef.current.takePictureAsync({
         quality: 1,
         skipProcessing: false,
       });
-
-      if (useScreenFlash) setIsScreenFlash(false);
 
       if (photo?.uri) {
         setPreviewUri(photo.uri);
       }
     } catch (error) {
       console.error("Capture error:", error);
-      setIsScreenFlash(false);
       Toast.show({
         type: "error",
         text1: "Capture Failed",
@@ -92,7 +80,7 @@ export default function CameraScreen() {
     if (timerDuration > 0) {
       let count = timerDuration;
       setCountdown(count);
-      HapticService.trigger("notificationSuccess");
+      HapticService.trigger("impactHeavy");
 
       const interval = setInterval(() => {
         count -= 1;
@@ -112,7 +100,6 @@ export default function CameraScreen() {
 
   const handleSave = async () => {
     if (!previewUri) return;
-    HapticService.trigger("impactMedium");
     setIsSaving(true);
     try {
       await photoStorage.savePhoto(previewUri);
@@ -126,11 +113,6 @@ export default function CameraScreen() {
       }
       await fetchPhotos();
       setPreviewUri(null);
-      Toast.show({
-        type: "success",
-        text1: "Saved",
-        text2: "Photo saved to your library!",
-      });
     } catch (error) {
       console.error("Save error:", error);
       Toast.show({
@@ -210,7 +192,10 @@ export default function CameraScreen() {
           Allow XeroLens to use your camera.
         </Text>
         <TouchableOpacity
-          onPress={requestPermission}
+          onPress={() => {
+            HapticService.trigger("impactMedium");
+            requestPermission();
+          }}
           style={styles.permissionButton}
         >
           <Text style={styles.permissionButtonText}>Allow Camera</Text>
@@ -250,7 +235,7 @@ export default function CameraScreen() {
                 ref={cameraRef}
                 style={StyleSheet.absoluteFill}
                 facing={facing}
-                enableTorch={torch && facing === "back"}
+                flash={torch ? "on" : "off"}
                 zoom={zoom}
                 active={cameraActive}
               />
@@ -265,14 +250,20 @@ export default function CameraScreen() {
             {!previewUri && (
               <View style={styles.zoomRow}>
                 <TouchableOpacity
-                  onPress={() => setZoom(0)}
+                  onPress={() => {
+                    HapticService.trigger("impactMedium");
+                    setZoom(0);
+                  }}
                   style={[styles.zoomBtn, zoom === 0 && styles.zoomBtnActive]}
                 >
                   <Text style={styles.zoomText}>1×</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
-                  onPress={() => setZoom(0.5)}
-                  style={[styles.zoomBtn, zoom === 0.5 && styles.zoomBtnActive]}
+                  onPress={() => {
+                    HapticService.trigger("impactMedium");
+                    setZoom(0.1);
+                  }}
+                  style={[styles.zoomBtn, zoom === 0.1 && styles.zoomBtnActive]}
                 >
                   <Text style={styles.zoomText}>2×</Text>
                 </TouchableOpacity>
@@ -289,100 +280,115 @@ export default function CameraScreen() {
 
         {/* Footer */}
         <View style={[styles.footer, { paddingBottom: insets.bottom + 16 }]}>
-          {previewUri ? (
-            <View style={styles.previewActions}>
-              <Button
-                title={isSaving ? "Saving…" : "Save Photo"}
-                onPress={handleSave}
-                variant="variant2"
-                leftIcon={
-                  isSaving ? (
+          <View style={styles.footerContent}>
+            {previewUri ? (
+              <View style={styles.previewActions}>
+                <Button
+                  title={isSaving ? "Saving…" : "Save Photo"}
+                  onPress={handleSave}
+                  variant="variant2"
+                  leftIcon={
+                    isSaving ? (
+                      <ActivityIndicator color="white" size="small" />
+                    ) : (
+                      <Feather name="save" size={20} color="white" />
+                    )
+                  }
+                  containerStyle={styles.saveBtn}
+                />
+                <TouchableOpacity
+                  onPress={async () => {
+                    const saved = await handleEdit();
+                    if (saved)
+                      router.push({
+                        pathname: "/editing",
+                        params: { id: saved.id },
+                      } as any);
+                  }}
+                  disabled={isSaving}
+                  style={styles.editBtn}
+                >
+                  {isSaving ? (
                     <ActivityIndicator color="white" size="small" />
                   ) : (
-                    <Feather name="save" size={20} color="white" />
-                  )
-                }
-                containerStyle={styles.saveBtn}
-              />
-              <TouchableOpacity
-                onPress={async () => {
-                  const saved = await handleEdit();
-                  if (saved)
-                    router.push({
-                      pathname: "/editing",
-                      params: { id: saved.id },
-                    } as any);
-                }}
-                disabled={isSaving}
-                style={styles.editBtn}
-              >
-                {isSaving ? (
-                  <ActivityIndicator color="#FFF3CC" size="small" />
-                ) : (
-                  <>
-                    <Feather name="edit-3" size={22} color="#FFF3CC" />
-                    <Text style={styles.editBtnLabel}>Edit</Text>
-                  </>
-                )}
-              </TouchableOpacity>
-            </View>
-          ) : (
-            <View style={styles.controls}>
-              <View style={styles.toolRow}>
-                <TouchableOpacity
-                  onPress={() => router.replace("/(tabs)/library")}
-                  style={styles.toolBtn}
-                >
-                  <Feather name="image" size={26} color="#FFF3CC" />
-                </TouchableOpacity>
-                <TouchableOpacity
-                  onPress={() => toggleTorch()}
-                  style={styles.toolBtn}
-                >
-                  <Ionicons
-                    name={torch ? "flash" : "flash-off"}
-                    size={26}
-                    color="#FFF3CC"
-                  />
-                </TouchableOpacity>
-                <TouchableOpacity
-                  onPress={() => toggleTimer()}
-                  style={styles.toolBtn}
-                >
-                  <Feather name="clock" size={26} color="#FFF3CC" />
-                  {timerDuration > 0 && (
-                    <View style={styles.timerBadge}>
-                      <Text style={styles.timerBadgeText}>{timerDuration}</Text>
-                    </View>
+                    <>
+                      <Feather name="edit-3" size={22} color="white" />
+                      <Text style={styles.editBtnLabel}>Edit</Text>
+                    </>
                   )}
                 </TouchableOpacity>
+              </View>
+            ) : (
+              <View style={styles.controls}>
+                <View style={styles.toolRow}>
+                  <TouchableOpacity
+                    onPress={() => {
+                      HapticService.trigger("impactMedium");
+                      router.replace("/(tabs)/library");
+                    }}
+                    style={styles.toolBtn}
+                  >
+                    <Feather name="image" size={26} color="#FFF3CC" />
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    onPress={() => {
+                      HapticService.trigger("impactMedium");
+                      toggleTorch();
+                    }}
+                    style={styles.toolBtn}
+                  >
+                    <Ionicons
+                      name={torch ? "flash" : "flash-off"}
+                      size={26}
+                      color="#FFF3CC"
+                    />
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    onPress={() => {
+                      HapticService.trigger("impactMedium");
+                      toggleTimer();
+                    }}
+                    style={styles.toolBtn}
+                  >
+                    <Feather name="clock" size={26} color="#FFF3CC" />
+                    {timerDuration > 0 && (
+                      <View style={styles.timerBadge}>
+                        <Text style={styles.timerBadgeText}>
+                          {timerDuration}
+                        </Text>
+                      </View>
+                    )}
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    onPress={() => {
+                      HapticService.trigger("impactMedium");
+                      toggleCamera();
+                    }}
+                    style={styles.toolBtn}
+                  >
+                    <Feather name="refresh-cw" size={26} color="#FFF3CC" />
+                  </TouchableOpacity>
+                </View>
                 <TouchableOpacity
-                  onPress={() => toggleCamera()}
-                  style={styles.toolBtn}
+                  onPress={takePicture}
+                  activeOpacity={0.8}
+                  disabled={countdown !== null}
+                  style={styles.shutterOuter}
                 >
-                  <Feather name="refresh-cw" size={26} color="#FFF3CC" />
+                  <View
+                    style={[
+                      styles.shutterInner,
+                      countdown !== null && styles.shutterDisabled,
+                    ]}
+                  >
+                    <Ionicons name="camera" size={32} color="#FFF3CC" />
+                  </View>
                 </TouchableOpacity>
               </View>
-              <TouchableOpacity
-                onPress={takePicture}
-                activeOpacity={0.8}
-                disabled={countdown !== null}
-                style={styles.shutterOuter}
-              >
-                <View
-                  style={[
-                    styles.shutterInner,
-                    countdown !== null && styles.shutterDisabled,
-                  ]}
-                >
-                  <Ionicons name="camera" size={32} color="#FFF3CC" />
-                </View>
-              </TouchableOpacity>
-            </View>
-          )}
+            )}
+          </View>
         </View>
       </SafeAreaView>
-      {isScreenFlash && <View style={styles.screenFlash} />}
     </View>
   );
 }
@@ -453,9 +459,15 @@ const styles = StyleSheet.create({
     textTransform: "uppercase",
     letterSpacing: 4,
   },
-  viewfinderWrapper: { flex: 1, paddingHorizontal: 8, paddingVertical: 4 },
-  viewfinderInner: {
+  viewfinderWrapper: {
     flex: 1,
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    justifyContent: "center",
+  },
+  viewfinderInner: {
+    width: "100%",
+    aspectRatio: 3 / 4,
     borderRadius: 36,
     overflow: "hidden",
     backgroundColor: "#000",
@@ -498,13 +510,14 @@ const styles = StyleSheet.create({
     fontSize: 96,
   },
   footer: { paddingHorizontal: 16, paddingTop: 12 },
+  footerContent: { height: 160, justifyContent: "center" },
   previewActions: { flexDirection: "row", alignItems: "center", gap: 12 },
   saveBtn: { flex: 1, height: 58 },
   editBtn: {
     width: 68,
     height: 58,
     borderRadius: 18,
-    backgroundColor: "rgba(255,255,255,0.08)",
+    backgroundColor: "#BC4749",
     borderWidth: 1,
     borderColor: "rgba(255,255,255,0.12)",
     alignItems: "center",
@@ -512,7 +525,7 @@ const styles = StyleSheet.create({
     gap: 2,
   },
   editBtnLabel: {
-    color: "#FFF3CC",
+    color: "white",
     fontFamily: theme.fontFamily.sans,
     fontSize: 10,
     textTransform: "uppercase",
@@ -566,9 +579,4 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   shutterDisabled: { opacity: 0.5 },
-  screenFlash: {
-    ...StyleSheet.absoluteFillObject,
-    backgroundColor: "white",
-    zIndex: 9999,
-  },
 });

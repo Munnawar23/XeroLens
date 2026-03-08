@@ -1,10 +1,11 @@
 import { useTheme } from "@/hooks/useTheme";
+import { darkColors } from "@/styles/theme";
 import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
 import { useEffect } from "react";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { View } from "react-native";
 import Toast from "react-native-toast-message";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
@@ -29,15 +30,13 @@ export default function RootLayout() {
     return null;
   }
 
-  // Determine status bar style based on theme background brightness (approximation)
-  // or just use a flag. In our case, light theme has light background, so dark status bar.
-  const statusBarStyle = colors.background === "#F5EEEC" ? "dark" : "light";
+  const isDark = colors.background === darkColors.background;
 
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
-      <StatusBar style={statusBarStyle} />
+    <View style={{ flex: 1 }}>
+      <StatusBar style={isDark ? "light" : "dark"} />
       <Stack screenOptions={{ headerShown: false }} />
       <Toast />
-    </GestureHandlerRootView>
+    </View>
   );
 }
