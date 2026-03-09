@@ -1,8 +1,7 @@
-import { HapticService } from "@/services/hapticService";
 import { theme } from "@/styles/theme";
 import { CameraView } from "expo-camera";
 import React from "react";
-import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Image, StyleSheet, Text, View } from "react-native";
 
 interface CameraViewfinderProps {
   cameraRef: React.RefObject<any>;
@@ -45,28 +44,30 @@ export const CameraViewfinder = ({
           />
         )}
 
-        {!previewUri && (
-          <View style={styles.zoomRow}>
-            <TouchableOpacity
-              onPress={() => {
-                HapticService.trigger("impactMedium");
-                setZoom(0);
-              }}
-              style={[styles.zoomBtn, zoom === 0 && styles.zoomBtnActive]}
-            >
-              <Text style={styles.zoomText}>1×</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => {
-                HapticService.trigger("impactMedium");
-                setZoom(0.1);
-              }}
-              style={[styles.zoomBtn, zoom === 0.1 && styles.zoomBtnActive]}
-            >
-              <Text style={styles.zoomText}>2×</Text>
-            </TouchableOpacity>
-          </View>
-        )}
+        {/* Hide zoom buttons for now
+38:         {!previewUri && (
+49:           <View style={styles.zoomRow}>
+50:             <TouchableOpacity
+51:               onPress={() => {
+52:                 HapticService.trigger("impactMedium");
+53:                 setZoom(0);
+54:               }}
+55:               style={[styles.zoomBtn, zoom === 0 && styles.zoomBtnActive]}
+56:             >
+57:               <Text style={styles.zoomText}>1×</Text>
+58:             </TouchableOpacity>
+59:             <TouchableOpacity
+60:               onPress={() => {
+61:                 HapticService.trigger("impactMedium");
+62:                 setZoom(0.1);
+63:               }}
+64:               style={[styles.zoomBtn, zoom === 0.1 && styles.zoomBtnActive]}
+65:             >
+66:               <Text style={styles.zoomText}>2×</Text>
+67:             </TouchableOpacity>
+68:           </View>
+69:         )}
+        */}
 
         {countdown !== null && (
           <View style={styles.countdownOverlay}>

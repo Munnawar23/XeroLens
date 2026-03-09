@@ -89,13 +89,15 @@ export default function PhotoDetailScreen() {
         text1: "Saved",
         text2: "Photo saved to your gallery!",
       });
-    } catch (error) {
-      console.error("Failed to save photo:", error);
-      Toast.show({
-        type: "error",
-        text1: "Error",
-        text2: "Failed to save photo to gallery",
-      });
+    } catch (error: any) {
+      if (error.message !== "Gallery permission denied.") {
+        console.error("Failed to save photo:", error);
+        Toast.show({
+          type: "error",
+          text1: "Error",
+          text2: "Failed to save photo to gallery",
+        });
+      }
     } finally {
       setIsSaving(false);
     }

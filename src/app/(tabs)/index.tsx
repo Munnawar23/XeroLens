@@ -108,13 +108,15 @@ export default function CameraScreen() {
       }
       await fetchPhotos();
       setPreviewUri(null);
-    } catch (error) {
-      console.error("Save error:", error);
-      Toast.show({
-        type: "error",
-        text1: "Save Failed",
-        text2: (error as Error).message,
-      });
+    } catch (error: any) {
+      if (error.message !== "Gallery permission denied.") {
+        console.error("Save error:", error);
+        Toast.show({
+          type: "error",
+          text1: "Save Failed",
+          text2: (error as Error).message,
+        });
+      }
     } finally {
       setIsSaving(false);
     }
@@ -130,18 +132,24 @@ export default function CameraScreen() {
       if (saveToGallery) {
         try {
           await savePhotoToGallery(previewUri);
-        } catch (e) {}
+        } catch (e) {
+          if ((e as Error).message !== "Gallery permission denied.") {
+            console.error("Edit gallery save error:", e);
+          }
+        }
       }
       await fetchPhotos();
       setPreviewUri(null);
       return savedPhoto;
-    } catch (error) {
-      console.error("Edit save error:", error);
-      Toast.show({
-        type: "error",
-        text1: "Edit Failed",
-        text2: (error as Error).message,
-      });
+    } catch (error: any) {
+      if (error.message !== "Gallery permission denied.") {
+        console.error("Edit save error:", error);
+        Toast.show({
+          type: "error",
+          text1: "Edit Failed",
+          text2: (error as Error).message,
+        });
+      }
       return null;
     } finally {
       setIsSaving(false);
