@@ -1,6 +1,7 @@
 import { EmptyState } from "@/components/common/EmptyState";
 import { Header } from "@/components/common/Header";
 import { PhotoGrid } from "@/components/common/PhotoGrid";
+import { formatDate } from "@/helpers/dateHelpers";
 import { useTheme } from "@/hooks/useTheme";
 import { CapturedPhoto } from "@/services/storageService";
 import { useFavoritesStore } from "@/store/useFavoritesStore";
@@ -17,16 +18,6 @@ import {
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-
-// Helper to format date
-const formatDate = (timestamp: number) => {
-  const date = new Date(timestamp);
-  return date.toLocaleDateString("en-US", {
-    month: "long",
-    day: "numeric",
-    year: "numeric",
-  });
-};
 
 export const useFavoritePhotos = () => {
   const {
@@ -99,6 +90,18 @@ export default function FavoritesScreen() {
     </View>
   );
 
+  const renderItem = ({ item }: { item: any }) => (
+    <View style={styles.sectionContainer}>
+      {renderSectionHeader(item.date)}
+      <PhotoGrid
+        photos={item.data}
+        onPhotoPress={(photo) => {
+          router.push(`/photo/${photo.id}`);
+        }}
+      />
+    </View>
+  );
+
   return (
     <View style={styles.container}>
       <SafeAreaView style={styles.safeArea} edges={["top"]}>
@@ -115,7 +118,7 @@ export default function FavoritesScreen() {
                   title="No Favorites Yet"
                   subtitle="Heart your best shots to see them here"
                   animationSource={require("@/assets/animations/empty.json")}
-                  animationSize={180}
+                  animationSize={300}
                 />
               ) : (
                 <View style={styles.centered}>
@@ -128,17 +131,7 @@ export default function FavoritesScreen() {
               data={sections}
               keyExtractor={(item) => item.date}
               ListHeaderComponent={<Header title="Favorites" />}
-              renderItem={({ item }) => (
-                <View style={styles.sectionContainer}>
-                  {renderSectionHeader(item.date)}
-                  <PhotoGrid
-                    photos={item.data}
-                    onPhotoPress={(photo) => {
-                      router.push(`/photo/${photo.id}`);
-                    }}
-                  />
-                </View>
-              )}
+              renderItem={renderItem}
               contentContainerStyle={styles.listContent}
               refreshControl={
                 <RefreshControl

@@ -36,7 +36,7 @@ export default function RootLayout() {
     <View style={{ flex: 1 }}>
       <StatusBar style={isDark ? "light" : "dark"} />
       <Stack screenOptions={{ headerShown: false }} />
-      <Toast />
+      <Toast position="top" />
     </View>
   );
 }

@@ -1,3 +1,4 @@
+import { formatDate } from "@/helpers/dateHelpers";
 import { useTheme } from "@/hooks/useTheme";
 import { HapticService } from "@/services/hapticService";
 import { theme } from "@/styles/theme";
@@ -38,13 +39,7 @@ export const DetailHeader: React.FC<DetailHeaderProps> = ({
 
       <View style={styles.titleContainer}>
         <Text style={styles.titleText}>Photo Detail</Text>
-        <Text style={styles.subtitleText}>
-          {new Date(date).toLocaleDateString("en-US", {
-            month: "short",
-            day: "numeric",
-            year: "numeric",
-          })}
-        </Text>
+        <Text style={styles.subtitleText}>{formatDate(Number(date))}</Text>
       </View>
 
       <TouchableOpacity

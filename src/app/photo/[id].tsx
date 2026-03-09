@@ -6,11 +6,11 @@ import { HapticService } from "@/services/hapticService";
 import { savePhotoToGallery } from "@/services/mediaService";
 import { CapturedPhoto, photoStorage } from "@/services/storageService";
 import { Feather } from "@expo/vector-icons";
+import { Image } from "expo-image";
 import { router, useLocalSearchParams } from "expo-router";
 import React, { useEffect, useMemo, useState } from "react";
 import {
   ActivityIndicator,
-  Image,
   StyleSheet,
   TouchableOpacity,
   View,
@@ -124,7 +124,8 @@ export default function PhotoDetailScreen() {
             <Image
               source={{ uri: photo.uri }}
               style={styles.image}
-              resizeMode="cover"
+              contentFit="cover"
+              transition={300}
             />
           </View>
         </View>

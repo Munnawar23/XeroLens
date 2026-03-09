@@ -1,6 +1,7 @@
 import { EmptyState } from "@/components/common/EmptyState";
 import { Header } from "@/components/common/Header";
 import { PhotoGrid } from "@/components/common/PhotoGrid";
+import { formatDate } from "@/helpers/dateHelpers";
 import { useTheme } from "@/hooks/useTheme";
 import { CapturedPhoto } from "@/services/storageService";
 import { useLibraryStore } from "@/store/useLibraryStore";
@@ -16,16 +17,6 @@ import {
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-
-// Helper to format date
-const formatDate = (timestamp: number) => {
-  const date = new Date(timestamp);
-  return date.toLocaleDateString("en-US", {
-    month: "long",
-    day: "numeric",
-    year: "numeric",
-  });
-};
 
 export const useLibraryPhotos = () => {
   const {
@@ -94,6 +85,18 @@ export default function LibraryScreen() {
     </View>
   );
 
+  const renderItem = ({ item }: { item: any }) => (
+    <View style={styles.sectionContainer}>
+      {renderSectionHeader(item.date)}
+      <PhotoGrid
+        photos={item.data}
+        onPhotoPress={(photo) => {
+          router.push(`/photo/${photo.id}`);
+        }}
+      />
+    </View>
+  );
+
   return (
     <View style={styles.container}>
       <SafeAreaView style={styles.safeArea} edges={["top"]}>
@@ -118,17 +121,7 @@ export default function LibraryScreen() {
               data={sections}
               keyExtractor={(item) => item.date}
               ListHeaderComponent={<Header title="Library" />}
-              renderItem={({ item }) => (
-                <View style={styles.sectionContainer}>
-                  {renderSectionHeader(item.date)}
-                  <PhotoGrid
-                    photos={item.data}
-                    onPhotoPress={(photo) => {
-                      router.push(`/photo/${photo.id}`);
-                    }}
-                  />
-                </View>
-              )}
+              renderItem={renderItem}
               contentContainerStyle={styles.listContent}
               onEndReached={loadMore}
               onEndReachedThreshold={0.5}

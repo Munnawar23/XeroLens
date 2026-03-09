@@ -1,5 +1,5 @@
 import { Button } from "@/components/common/Button";
-import { hp } from "@/helpers";
+import { hp } from "@/helpers/dimensionHelpers";
 import { useTheme } from "@/hooks/useTheme";
 import { HapticService } from "@/services/hapticService";
 import { theme } from "@/styles/theme";
@@ -107,7 +107,7 @@ const createStyles = (colors: any, isDanger: boolean) =>
   StyleSheet.create({
     overlay: {
       flex: 1,
-      backgroundColor: "rgba(0,0,0,0.7)",
+      backgroundColor: colors.background + "B3", // 70% opacity theme background
       justifyContent: "center",
       alignItems: "center",
       paddingHorizontal: 24,
@@ -118,7 +118,7 @@ const createStyles = (colors: any, isDanger: boolean) =>
       borderRadius: 40,
       padding: 32,
       borderWidth: 1,
-      borderColor: "rgba(0,0,0,0.1)",
+      borderColor: colors.text + "1A", // 10% opacity theme text color
       shadowColor: "#000",
       shadowOffset: { width: 0, height: 10 },
       shadowOpacity: 0.25,
@@ -188,7 +188,7 @@ const createStyles = (colors: any, isDanger: boolean) =>
     },
     cancelTextContainer: {
       borderBottomWidth: 1,
-      borderColor: `${colors.muted}4D`, // 30% opacity
+      borderColor: colors.muted + "4D", // 30% opacity
     },
     cancelText: {
       color: colors.text,

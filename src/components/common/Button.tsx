@@ -1,15 +1,15 @@
-import { hp, wp } from "@/helpers";
+import { hp, wp } from "@/helpers/dimensionHelpers";
 import { useTheme } from "@/hooks/useTheme";
 import { HapticService, HapticType } from "@/services/hapticService";
 import { theme } from "@/styles/theme";
 import React, { ReactNode, useMemo } from "react";
 import {
-  StyleSheet,
-  Text,
-  TextStyle,
-  TouchableOpacity,
-  View,
-  ViewStyle,
+    StyleSheet,
+    Text,
+    TextStyle,
+    TouchableOpacity,
+    View,
+    ViewStyle,
 } from "react-native";
 
 interface ButtonProps {

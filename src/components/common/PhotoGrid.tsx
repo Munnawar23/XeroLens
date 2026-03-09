@@ -4,10 +4,10 @@ import { CapturedPhoto } from "@/services/storageService";
 import { useFavoritesStore } from "@/store/useFavoritesStore";
 import { theme } from "@/styles/theme";
 import { Ionicons } from "@expo/vector-icons";
+import { Image } from "expo-image";
 import React, { useMemo } from "react";
 import {
   Dimensions,
-  Image,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -35,63 +35,61 @@ export const PhotoGrid: React.FC<PhotoGridProps> = ({
   const styles = useMemo(() => createGridStyles(colors), [colors]);
   const { favorites, toggleFavorite } = useFavoritesStore();
 
-  return (
-    <View style={styles.gridContainer}>
-      {photos.map((photo) => {
-        const isFav = favorites.includes(photo.id);
+  const renderPhoto = (photo: CapturedPhoto) => {
+    const isFav = favorites.includes(photo.id);
 
-        return (
-          <View key={photo.id} style={styles.photoItem}>
-            <TouchableOpacity
-              activeOpacity={0.9}
-              onPress={() => {
-                HapticService.trigger("impactMedium");
-                onPhotoPress(photo);
-              }}
-              style={styles.imageWrapper}
-            >
-              <Image
-                source={{ uri: photo.uri }}
-                style={styles.image}
-                resizeMode="cover"
-              />
-            </TouchableOpacity>
+    return (
+      <View key={photo.id} style={styles.photoItem}>
+        <TouchableOpacity
+          activeOpacity={0.9}
+          onPress={() => {
+            HapticService.trigger("impactMedium");
+            onPhotoPress(photo);
+          }}
+          style={styles.imageWrapper}
+        >
+          <Image
+            source={{ uri: photo.uri }}
+            style={styles.image}
+            contentFit="cover"
+            transition={200}
+          />
+        </TouchableOpacity>
 
-            <TouchableOpacity
-              onPress={() => {
-                HapticService.trigger("impactMedium");
-                toggleFavorite(photo.id);
-                if (!isFav) {
-                  Toast.show({
-                    type: "success",
-                    text1: "Added to Favorites",
-                    position: "bottom",
-                  });
-                }
-              }}
-              style={styles.favoriteButton}
-            >
-              <Ionicons
-                name={isFav ? "heart" : "heart-outline"}
-                size={18}
-                color={isFav ? colors.primary : "#FFFFFF"}
-              />
-            </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            HapticService.trigger("impactMedium");
+            toggleFavorite(photo.id);
+            if (!isFav) {
+              Toast.show({
+                type: "success",
+                text1: "Added to Favorites",
+              });
+            }
+          }}
+          style={styles.favoriteButton}
+        >
+          <Ionicons
+            name={isFav ? "heart" : "heart-outline"}
+            size={18}
+            color={isFav ? colors.primary : "#FFFFFF"}
+          />
+        </TouchableOpacity>
 
-            <View style={styles.timeOverlay}>
-              <Text style={styles.timeText}>
-                {new Date(photo.date).toLocaleTimeString([], {
-                  hour: "2-digit",
-                  minute: "2-digit",
-                  hour12: false,
-                })}
-              </Text>
-            </View>
-          </View>
-        );
-      })}
-    </View>
-  );
+        <View style={styles.timeOverlay}>
+          <Text style={styles.timeText}>
+            {new Date(photo.date).toLocaleTimeString([], {
+              hour: "2-digit",
+              minute: "2-digit",
+              hour12: false,
+            })}
+          </Text>
+        </View>
+      </View>
+    );
+  };
+
+  return <View style={styles.gridContainer}>{photos.map(renderPhoto)}</View>;
 };
 
 const createGridStyles = (colors: any) =>

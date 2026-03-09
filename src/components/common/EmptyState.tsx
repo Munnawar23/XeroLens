@@ -15,7 +15,7 @@ export const EmptyState: React.FC<EmptyStateProps> = ({
   title = "Your Library is Empty",
   subtitle = "Photos you take will appear here",
   animationSource = require("@/assets/animations/camera.json"),
-  animationSize = 256,
+  animationSize = 300,
 }) => {
   const colors = useTheme();
   const styles = useMemo(() => createStyles(colors), [colors]);

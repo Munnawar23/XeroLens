@@ -39,7 +39,6 @@ export const cameraStore = create<CameraState>((set, get) => ({
 
   toggleTimer: () =>
     set((state) => {
-      // Cycle: 0 -> 3 -> 4 -> 5 -> 0
       const nextMap: Record<number, number> = {
         0: 3,
         3: 4,

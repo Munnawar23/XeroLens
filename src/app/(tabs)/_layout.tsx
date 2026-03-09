@@ -40,6 +40,32 @@ export default function TabLayout() {
       }}
     >
       <Tabs.Screen
+        name="library"
+        options={{
+          tabBarIcon: ({ color, focused }) => (
+            <Ionicons
+              name={focused ? "images" : "images-outline"}
+              color={color}
+              size={26}
+            />
+          ),
+          tabBarLabel: "Library",
+        }}
+      />
+      <Tabs.Screen
+        name="favorites"
+        options={{
+          tabBarIcon: ({ color, focused }) => (
+            <Ionicons
+              name={focused ? "heart" : "heart-outline"}
+              color={color}
+              size={26}
+            />
+          ),
+          tabBarLabel: "Favorites",
+        }}
+      />
+      <Tabs.Screen
         name="index"
         options={{
           tabBarStyle: { display: "none" },
@@ -67,33 +93,6 @@ export default function TabLayout() {
           tabBarLabel: "Studio",
         }}
       />
-      <Tabs.Screen
-        name="library"
-        options={{
-          tabBarIcon: ({ color, focused }) => (
-            <Ionicons
-              name={focused ? "images" : "images-outline"}
-              color={color}
-              size={26}
-            />
-          ),
-          tabBarLabel: "Library",
-        }}
-      />
-      <Tabs.Screen
-        name="favorites"
-        options={{
-          tabBarIcon: ({ color, focused }) => (
-            <Ionicons
-              name={focused ? "heart" : "heart-outline"}
-              color={color}
-              size={26}
-            />
-          ),
-          tabBarLabel: "Favorites",
-        }}
-      />
-
       <Tabs.Screen
         name="settings"
         options={{

@@ -1,5 +1,5 @@
 import { Button } from "@/components/common/Button";
-import { hp } from "@/helpers";
+import { hp } from "@/helpers/dimensionHelpers";
 import { useAppPermissions } from "@/hooks/useAppPermissions";
 import { HapticService } from "@/services/hapticService";
 import { theme } from "@/styles/theme";
@@ -7,20 +7,13 @@ import { Feather } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { router } from "expo-router";
 import React, { useEffect, useState } from "react";
-import {
-  Alert,
-  ImageBackground,
-  Linking,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
+import { ImageBackground, StyleSheet, Text, View } from "react-native";
 import Animated, {
-  Easing,
-  useAnimatedStyle,
-  useSharedValue,
-  withDelay,
-  withTiming,
+    Easing,
+    useAnimatedStyle,
+    useSharedValue,
+    withDelay,
+    withTiming,
 } from "react-native-reanimated";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -97,26 +90,13 @@ export default function SplashScreen() {
 
     const allGranted = isGranted ? true : await requestPermissions();
 
-    if (allGranted) {
-      try {
-        await AsyncStorage.setItem(HAS_LAUNCHED_KEY, "true");
-      } catch (error) {
-        console.error("Error saving launch state:", error);
-      }
-      router.replace("/(tabs)" as any);
-    } else {
-      Alert.alert(
-        "Permissions Required",
-        "XeroLens needs Camera and Storage access to capture and save your vintage photos. Please grant the permissions to continue.",
-        [
-          { text: "Try Again", onPress: () => handleGetStarted() },
-          {
-            text: "Open Settings",
-            onPress: () => Linking.openSettings(),
-          },
-        ],
-      );
+    try {
+      await AsyncStorage.setItem(HAS_LAUNCHED_KEY, "true");
+    } catch (error) {
+      console.error("Error saving launch state:", error);
     }
+
+    router.replace("/(tabs)" as any);
   };
 
   if (isChecking) {
