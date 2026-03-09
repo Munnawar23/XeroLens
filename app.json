@@ -6,6 +6,7 @@
     "orientation": "portrait",
     "icon": "./src/assets/images/icon.png",
     "scheme": "xerolens",
+    "backgroundColor": "#3D6F72",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
@@ -13,7 +14,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "backgroundColor": "#ffffff",
+        "backgroundColor": "#3D6F72",
         "foregroundImage": "./src/assets/images/icon.png"
       },
       "edgeToEdgeEnabled": true,
